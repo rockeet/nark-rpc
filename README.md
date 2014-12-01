@@ -21,9 +21,9 @@ END_RPC_ADD_MF()
 END_RPC_INTERFACE()
 ```
 
-This can be thought of as nark-rpc's IDL, `FileObj` is in `SessionScope`.
+This can be thought of as nark-rpc's IDL, as it declared, `FileObj` is in `SessionScope`.
 
-There is a `GlobaleScope`, `samples/echo.h` is such an example:
+There is another scope: `GlobaleScope`, `samples/echo.h` is such an example:
 ```c++
 BEGIN_RPC_INTERFACE(Echo, GlobaleScope)
     RPC_ADD_MF(echo)
