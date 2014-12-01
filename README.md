@@ -4,7 +4,9 @@ nark-rpc
 RPC(Remote Procedure Call) on top of nark-serialization
 
 ## Quick Start
-`samples/ifile.h` is good example:
+### IDL
+nark-rpc are all in C++, even its IDL is C++, `samples/ifile.h` is a good example:
+
 ```c++
 BEGIN_RPC_INTERFACE(FileObj, SessionScope)
     RPC_ADD_MF(open)
@@ -18,3 +20,41 @@ END_RPC_ADD_MF()
     RPC_DECLARE_MF(close, ())
 END_RPC_INTERFACE()
 ```
+
+This can be thought of as nark-rpc's IDL, `FileObj` is in `SessionScope`.
+
+There is a `GlobaleScope`, `samples/echo.h` is such an example:
+```c++
+BEGIN_RPC_INTERFACE(Echo, GlobaleScope)
+    RPC_ADD_MF(echo)
+END_RPC_ADD_MF()
+    // 3rd macro param is ';' means non-pure-virtual
+    RPC_DECLARE_MF_EX(echo, (const string& msg, string* echo_of_server), ;)
+END_RPC_INTERFACE()
+```
+
+Note: function overload is not allowed in IDL.
+
+### Client
+
+RPC client just call the (member) functions defined in IDL, the functions seem defined as normal functions.
+
+See [samples/file\_client/file\_client.cpp](blob/master/samples/file_client/file_client.cpp)
+
+See [samples/echo\_client/echo\_client.cpp](blob/master/samples/echo_client/echo_client.cpp)
+
+### Server
+
+RPC server implement the (member) functions, these functions are called by the client through network.
+
+Writing a RPC server is as simple as writing a normal class.
+
+See [samples/file\_server/file\_server.cpp](blob/master/samples/file_server/file_server.cpp)
+
+Because `echo` declared in `ifile.h` is non-pure-virtual, this makes it much simpler:
+
+See [samples/echo\_server/echo\_server.cpp](blob/master/samples/echo_server/echo_server.cpp)
+
+## More
+
+To be written...
