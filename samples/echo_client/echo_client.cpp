@@ -3,11 +3,13 @@
 
 #include "stdafx.h"
 
+#ifdef _MSC_VER
 #pragma comment(lib, "Ws2_32.lib")
+#endif
 
 #include <stdio.h>
 #include <nark/rpc/client.hpp>
-#include <nark/io/SocketStream.hpp>
+#include <nark/inet/SocketStream.hpp>
 #include <iostream>
 
 using namespace std;

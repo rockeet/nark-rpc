@@ -38,6 +38,7 @@ public:
 	{
 		// do nothing...
 		typename T::SFINAE_ro_self_t* for_check = 0;
+		(void)(for_check);
 // 		var_size_t objid;
 // 		*p >> objid;
 // 		if (x.getID() == 0)
@@ -95,6 +96,7 @@ public:
 	template<class T> client_object_output& operator<<(const T& x)
 	{
 		typename T::SFINAE_ro_self_t* for_check = 0;
+		(void)(for_check);
 		*p << var_size_t(x.getID());
 		return *this;
 	}

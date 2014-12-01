@@ -12,19 +12,16 @@ BUILD_ROOT := build/${COMPILER}-${UNAME_MachineSystem}
 ddir:=${BUILD_ROOT}/dbg
 rdir:=${BUILD_ROOT}/rls
 
-gen_sh := $(dir $(lastword ${MAKEFILE_LIST}))gen_env_conf.sh
+FEBIRD_INC := -I../src \
+  -I../../nark-hashmap/src \
+  -I../../nark-serialization/src \
+  -I../../nark-bone/src
+FEBIRD_LIB := -L../lib \
+  -L../../nark-serialization/lib \
+  -L../../nark-bone/lib
 
-err := $(shell env BDB_HOME=${BDB_HOME} BOOST_INC=${BOOST_INC} bash ${gen_sh} "${CXX}" ${COMPILER} ${BUILD_ROOT}/env.mk; echo $$?)
-ifneq "${err}" "0"
-   $(error err = ${err} MAKEFILE_LIST = ${MAKEFILE_LIST}, PWD = ${PWD}, gen_sh = ${gen_sh} "${CXX}" ${COMPILER} ${BUILD_ROOT}/env.mk)
-endif
-
-FEBIRD_INC := -Isrc
-FEBIRD_INC += -I../nark-bone/src
-FEBIRD_INC += -I../nark-hashmap/src
-FEBIRD_INC += -I../nark-serialization/src
-
-include ${BUILD_ROOT}/env.mk
+FEBIRD_LIB_D := ${FEBIRD_LIB} -lnark-rpc-d -lnark-serialization-d -lnark-bone-d
+FEBIRD_LIB_R := ${FEBIRD_LIB} -lnark-rpc-r -lnark-serialization-r -lnark-bone-r
 
 UNAME_System := $(shell uname | sed 's/^\([0-9a-zA-Z]*\).*/\1/')
 ifeq (CYGWIN, ${UNAME_System})
@@ -93,20 +90,7 @@ DEFS := -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
 override CFLAGS   += ${DEFS}
 override CXXFLAGS += ${DEFS}
 
-override INCS := ${FEBIRD_INC} ${INCS}
-
-ifeq (, $(findstring ${BOOST_INC}, ${INCS} /usr/include /usr/local/include))
-  override INCS += -I${BOOST_INC}
-endif
-
-ifeq (, $(findstring ${BOOST_LIB}, /usr/lib64 /usr/lib /usr/local/lib))
-  override LIBS += -L${BOOST_LIB}
-endif
-
-LIBS += -L../nark-bone/lib
-LIBS += -L../nark-serialization/lib
-
-#override INCS += -I/usr/include
+INCS = ${FEBIRD_INC}
 
 LIBBOOST ?= \
 	  -lboost_thread${BOOST_SUFFIX} \
@@ -115,6 +99,8 @@ LIBBOOST ?= \
 
 LIBS += -L/usr/local/lib64 -L/usr/local/lib
 LIBS += -L/usr/lib64 -L/usr/lib
+LIBS += -lpthread
+LIBS += ${LIBBOOST}
 
 extf = -pie -fno-stack-protector
 #extf+=-fno-stack-protector-all
@@ -124,100 +110,47 @@ override CXXFLAGS += ${extf}
 #override CXXFLAGS += -g3
 #CXXFLAGS += -fnothrow-opt
 
-override INCS += -I${BDB_HOME}/include
-LIBS += -L${BDB_HOME}/lib
+allsrc := $(shell find * -name '*.cpp' -not -name 'stdafx.cpp')
+alldep := $(addprefix ${rdir}/, $(addsuffix .dep, $(basename ${allsrc}))) \
+          $(addprefix ${ddir}/, $(addsuffix .dep, $(basename ${allsrc})))
 
-ifeq (, ${prefix})
-	ifeq (root, ${USER})
-		prefix := /usr
-	else
-		prefix := /home/${USER}
-	endif
-endif
+allsrc_d_o := $(addprefix ${ddir}/, $(addsuffix .o, $(basename ${allsrc})))
+allsrc_r_o := $(addprefix ${rdir}/, $(addsuffix .o, $(basename ${allsrc})))
 
-#$(warning prefix=${prefix} BDB_HOME=${BDB_HOME}: LIBS=${LIBS})
+#$(warning ${allsrc_d_o} ${allsrc_r_o})
 
-rpc_src := \
-   $(wildcard src/nark/util/*.cpp) \
-   $(wildcard src/nark/inet/*.cpp) \
-   $(wildcard src/nark/rpc/*.cpp)
-
-serialization_src := \
-   $(wildcard src/nark/*.cpp) \
-   $(wildcard src/nark/io/*.cpp) \
-   $(wildcard src/nark/util/*.cpp) \
-   ${obsoleted_src}
-
-serialization_src := $(filter-out ${trbxx_src} ${zip_src}, ${serialization_src})
-
-#function definition
-#@param:${1} -- targets var prefix, such as bdb_util | serialization
-#@param:${2} -- build type: d | r
-objs = $(addprefix ${${2}dir}/, $(addsuffix .o, $(basename ${${1}_src})))
-
-rpc_d_o := $(call objs,rpc,d)
-rpc_r_o := $(call objs,rpc,r)
-rpc_d := lib/libnark-rpc-${COMPILER}-d${DLL_SUFFIX}
-rpc_r := lib/libnark-rpc-${COMPILER}-r${DLL_SUFFIX}
-static_rpc_d := lib/libnark-rpc-${COMPILER}-d.a
-static_rpc_r := lib/libnark-rpc-${COMPILER}-r.a
-
-ALL_TARGETS = rpc
-DBG_TARGETS = ${rpc_d}
-RLS_TARGETS = ${rpc_r}
-
-.PHONY : rpc
-
-rpc: ${rpc_d} ${rpc_r} ${static_rpc_d} ${static_rpc_r}
-
-allsrc = ${rpc_src}
-alldep = $(addprefix ${rdir}/, $(addsuffix .dep, $(basename ${allsrc}))) \
-         $(addprefix ${ddir}/, $(addsuffix .dep, $(basename ${allsrc})))
+.PHONY : all
+all : dbg rls
 
 .PHONY : dbg rls
-dbg: ${DBG_TARGETS}
-rls: ${RLS_TARGETS}
-
-${rpc_d} ${rpc_r} : LIBS += ${LIBBOOST} -lpthread
-${rpc_d} : LIBS += -lnark-serialization-${COMPILER}-d -lnark-bone-${COMPILER}-d
-${rpc_r} : LIBS += -lnark-serialization-${COMPILER}-r -lnark-bone-${COMPILER}-r
-
-${rpc_d} : $(call objs,rpc,d) ${serialization_d}
-${rpc_r} : $(call objs,rpc,r) ${serialization_r}
-${static_rpc_d} : $(call objs,rpc,d)
-${static_rpc_r} : $(call objs,rpc,r)
-
-%${DLL_SUFFIX}:
-	@echo "----------------------------------------------------------------------------------"
-	@echo "Creating dynamic library: $@"
-	@echo BOOST_INC=${BOOST_INC} BOOST_SUFFIX=${BOOST_SUFFIX}
-	@echo -e "OBJS:" $(addprefix "\n  ",$(sort $(filter %.o,$^)))
-	@echo -e "LIBS:" $(addprefix "\n  ",${LIBS})
-	@mkdir -p lib
-	@ln -sfT $(notdir $@) $(subst -${COMPILER},, $@)
-	@${LD} -shared $(sort $(filter %.o,$^)) ${LDFLAGS} ${LIBS} -o ${CYG_DLL_FILE} ${CYGWIN_LDFLAGS}
-ifeq (CYGWIN, ${UNAME_System})
-	@cp -l -f ${CYG_DLL_FILE} /usr/bin
-endif
-
-%.a:
-	@echo "----------------------------------------------------------------------------------"
-	@echo "Creating static library: $@"
-	@echo BOOST_INC=${BOOST_INC} BOOST_SUFFIX=${BOOST_SUFFIX}
-	@echo -e "OBJS:" $(addprefix "\n  ",$(sort $(filter %.o,$^)))
-	@echo -e "LIBS:" $(addprefix "\n  ",${LIBS})
-	@mkdir -p lib
-	@ln -sfT $(notdir $@) $(subst -${COMPILER},, $@)
-	@${AR} rcs $@ $(filter %.o,$^)
+dbg: $(addsuffix .exe, $(basename ${allsrc_d_o}))
+rls: $(addsuffix .exe, $(basename ${allsrc_r_o}))
 
 .PHONY : clean
 clean:
-	-rm -rf lib/libnark* ${BUILD_ROOT} ${PRECOMPILED_HEADER_GCH}
+	-rm -rf ${BUILD_ROOT} ${PRECOMPILED_HEADER_GCH}
 
 .PHONY : depends
 depends : ${alldep}
 
 -include ${alldep}
+
+${rdir}/%.exe: ${rdir}/%.o
+	@echo file: $< "->" $@
+	mkdir -p $(dir $@)
+	${LD} ${DBG_FLAGS} ${CXXFLAGS} $< ${FEBIRD_LIB_R} ${LIBS} -o $@
+
+${ddir}/%.exe: ${ddir}/%.o
+	@echo file: $< "->" $@
+	mkdir -p $(dir $@)
+	${LD} ${DBG_FLAGS} ${CXXFLAGS} $< ${FEBIRD_LIB_D} ${LIBS} -o $@
+
+${rdir}/%.o: %.cpp
+	@echo file: $< "->" $@
+	@echo FEBIRD_INC=${FEBIRD_INC}
+	@echo BOOST_INC=${BOOST_INC} BOOST_SUFFIX=${BOOST_SUFFIX}
+	mkdir -p $(dir $@)
+	${CXX} ${CXX_STD} ${CPU} -c ${RLS_FLAGS} ${CXXFLAGS} ${INCS} $< -o $@
 
 ${ddir}/%.o: %.cpp
 	@echo file: $< "->" $@

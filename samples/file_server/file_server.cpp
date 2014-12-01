@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 #include <nark/rpc/server.hpp>
-#include <nark/io/SocketStream.hpp>
+#include <nark/inet/SocketStream.hpp>
 #include <iostream>
 
 using namespace std;

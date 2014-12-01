@@ -2,7 +2,9 @@
 //
 
 #include "stdafx.h"
+#ifdef _MSC_VER
 #pragma comment(lib, "Ws2_32.lib")
+#endif
 
 #include <nark/rpc/client.hpp>
 #include "../employee.h"

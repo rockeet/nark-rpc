@@ -30,6 +30,7 @@ template<class Input>  class server_object_input
 	void load(T*& x, AccessByNameID<boost::intrusive_ptr<U> >* byid)
 	{
 		typename T::SFINAE_ro_self_t* for_check = 0;
+		(void)(for_check);
 		var_size_t objid;
 		*p >> objid;
 		std::string err;
@@ -88,7 +89,7 @@ template<class Output> class server_object_output
 	{
 		// do nothing...
 		typename T::SFINAE_ro_self_t* for_check = 0;
-
+		(void)(for_check);
 // 		var_size_t objid(x->getID());
 // 		if (!byid->is_valid(objid.t))
 // 		{
