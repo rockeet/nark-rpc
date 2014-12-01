@@ -39,21 +39,18 @@ Note: function overload is not allowed in IDL.
 
 RPC client just call the (member) functions defined in IDL, the functions seem defined as normal functions.
 
-See [samples/file\_client/file\_client.cpp](samples/file_client/file_client.cpp)
-
-See [samples/echo\_client/echo\_client.cpp](samples/echo_client/echo_client.cpp)
+See [samples/file\_client/file\_client.cpp](samples/file_client/file_client.cpp#L22)
+See [samples/echo\_client/echo\_client.cpp](samples/echo_client/echo_client.cpp#L23)
 
 ### Server
 
 RPC server implement the (member) functions, these functions are called by the client through network.
 
 Writing a RPC server is as simple as writing a normal class.
-
-See [samples/file\_server/file\_server.cpp](samples/file_server/file_server.cpp)
+See [samples/file\_server/file\_server.cpp](samples/file_server/file_server.cpp#L24)
 
 Because `echo` declared in `ifile.h` is non-pure-virtual, this makes it much simpler:
-
-See [samples/echo\_server/echo\_server.cpp](samples/echo_server/echo_server.cpp)
+See [samples/echo\_server/echo\_server.cpp](samples/echo_server/echo_server.cpp#L24)
 
 ## More
 
