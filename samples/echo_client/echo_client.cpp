@@ -22,8 +22,7 @@ int main0(int argc, char* argv[])
 try {
 	auto_ptr<SocketStream> cs(ConnectSocket("127.0.0.1:8001"));
 	rpc_client<PortableDataInput, PortableDataOutput> client(cs.get());
-	EchoPtr ec;
-	client.create(ec, "echo");
+	EchoPtr ec = client.create("echo");
 	while (!cin.eof())
 	{
 		string msg, y;

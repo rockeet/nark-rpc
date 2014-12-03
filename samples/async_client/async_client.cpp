@@ -42,11 +42,8 @@ try {
 	auto_ptr<SocketStream> cs(ConnectSocket("127.0.0.1:8001"));
 	rpc_client<PortableDataInput, PortableDataOutput> client(cs.get());
 
-	AsyncImplPtr obj1;
-	SampleRPC_Interface2Ptr obj2;
-
-	client.create(obj1, "obj1");
-	client.create(obj2, "obj2");
+	AsyncImplPtr obj1 = client.create("obj1");
+	SampleRPC_Interface2Ptr obj2 = client.create("obj2");
 
 	int ret = client.retrieve(obj2, "obj2");
 	(void)ret;

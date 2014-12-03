@@ -21,8 +21,7 @@ int main0(int argc, char* argv[])
 try {
 	auto_ptr<SocketStream> cs(ConnectSocket("127.0.0.1:8001"));
 	rpc_client<PortableDataInput, PortableDataOutput> client(cs.get());
-	FileObjPtr file;
-	client.create(file);
+	FileObjPtr file = client.create();
 	string fname = "test.txt";
 	vector<char> buffer;
 	int ret = file->open(fname, "w+");

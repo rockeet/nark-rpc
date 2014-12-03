@@ -402,6 +402,43 @@ public:
 			rp = new client_stub<rpc_client, Function>(funName);
 		fref.bind(x, rp);
 	}
+
+	class CreateHelper0 {
+		rpc_client* m_client;
+	public:
+		template<class Class>
+		operator boost::intrusive_ptr<Class>() const {
+			boost::intrusive_ptr<Class> obj(new Class());
+			obj->bind_client(m_client);
+			m_client->create_0(*obj);
+			return obj;
+		}
+		explicit CreateHelper0(rpc_client* client) : m_client(client) {}
+	};
+	class CreateHelper1 {
+		rpc_client* m_client;
+		const std::string* m_instanceName;
+	public:
+		template<class Class>
+		operator boost::intrusive_ptr<Class>() const {
+			boost::intrusive_ptr<Class> obj(new Class());
+			obj->bind_client(m_client);
+			m_client->create_1(*obj, *m_instanceName);
+			return obj;
+		}
+		explicit CreateHelper1(rpc_client* client, const std::string* instanceName)
+		   	: m_client(client), m_instanceName(instanceName) {}
+	};
+	friend class CreateHelper0;
+	friend class CreateHelper1;
+
+	//! sample usage: FileObjPtr file = client.create();
+	CreateHelper0 create() { return CreateHelper0(this); }
+
+	//! sample usage: EchoPtr echo = client.create("global_echo1");
+	CreateHelper1 create(const std::string& instanceName)
+	  { return CreateHelper1(this, &instanceName); }
+
 private:
 	input_t   m_input;
 	output_t  m_output;
