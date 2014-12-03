@@ -28,12 +28,13 @@ There is another scope: `GlobaleScope`, `samples/echo.h` is such an example:
 BEGIN_RPC_INTERFACE(Echo, GlobaleScope)
     RPC_ADD_MF(echo)
 END_RPC_ADD_MF()
-    // 3rd macro param is ';' means non-pure-virtual
-    RPC_DECLARE_MF_EX(echo, (const string& msg, string* echo_of_server), ;)
+    RPC_DECLARE_MF_D(echo, (const string& msg, string* echo_of_server))
 END_RPC_INTERFACE()
 ```
 
-Note: function overload is not allowed in IDL.
+* Notes
+  1. Function overload is not allowed in IDL.
+  2. `RPC_DECLARE_MF` or `RPC_DECLARE_MF_D` should be used consitently in the same RPC interface.
 
 ### Client
 
@@ -42,14 +43,18 @@ RPC client just call the (member) functions defined in IDL, the functions seem d
 See [samples/file\_client/file\_client.cpp](samples/file_client/file_client.cpp#L22)<br/>
 See [samples/echo\_client/echo\_client.cpp](samples/echo_client/echo_client.cpp#L23)
 
+**Note**: `RPC_DECLARE_MF` and `RPC_DECLARE_MF_D` are the same at client side.
+
 ### Server
 
 RPC server implement the (member) functions, these functions are called by the client through network.
 
-Writing a RPC server is as simple as writing a normal class:<br/>
+Writing a RPC server is as simple as writing a normal class:
+
+Functions declared by `RPC_DECLARE_MF` are **pure virtual**, so you must define an implementation class:<br/>
 See [samples/file\_server/file\_server.cpp](samples/file_server/file_server.cpp#L24)
 
-Because `echo` declared in `ifile.h` is non-pure-virtual, this makes it much simpler:<br/>
+Functions declared by `RPC_DECLARE_MF_D` are not **pure virtual**, `_D` means `Direct`:<br/>
 See [samples/echo\_server/echo\_server.cpp](samples/echo_server/echo_server.cpp#L24)
 
 ## More

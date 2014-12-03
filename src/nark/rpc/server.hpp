@@ -62,6 +62,7 @@ namespace nark { namespace rpc {
 	typedef rpc_ret_t (self_t::*FunName##_stub_t)ArgList;
 
 #define RPC_DECLARE_MF(FunName, ArgList) RPC_DECLARE_MF_EX(FunName, ArgList, =0;)
+#define RPC_DECLARE_MF_D(FunName, ArgList) RPC_DECLARE_MF_EX(FunName, ArgList, ;)
 
 //! 开始在远程对象中注册成员函数组，只注册一次
 //! 使用这个宏，用户必须自己定义： static remote_object* create_object()
