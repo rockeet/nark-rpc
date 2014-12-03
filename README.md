@@ -39,11 +39,10 @@ END_RPC_INTERFACE()
 ### Client
 
 RPC client just call the (member) functions defined in IDL, the functions seem defined as normal functions.
+`RPC_DECLARE_MF` and `RPC_DECLARE_MF_D` are the same at client side.
 
 See [samples/file\_client/file\_client.cpp](samples/file_client/file_client.cpp#L22)<br/>
 See [samples/echo\_client/echo\_client.cpp](samples/echo_client/echo_client.cpp#L23)
-
-**Note**: `RPC_DECLARE_MF` and `RPC_DECLARE_MF_D` are the same at client side.
 
 ### Server
 
