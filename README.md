@@ -7,21 +7,27 @@ RPC(Remote Procedure Call) on top of nark-serialization
 <table>
 <tbody>
 <tr>
-<td>[boost-1.41 or newer](http://sourceforge.net/projects/boost/)</td>
+<td><a href="http://sourceforge.net/projects/boost/">boost-1.41 or newer</a></td>
 <td>
-  * Require `boost_thread`, `boost_date_time`, `boost_system` to be built
-  * Other boost libraries are used as header-only
+<ul>
+  <li>
+    Require `boost_thread`, `boost_date_time`, `boost_system` to be built
+  </li>
+  <li>
+    Other boost libraries are used as header-only
+  </li>
+<ul>
 </td>
 <tr>
-<td>[nark-serialization](https://github.com/rockeet/nark-serialization)</td>
+<td><a href="https://github.com/rockeet/nark-serialization">nark-serialization</a></td>
 <td>Require binary library</td>
 </tr>
 <tr>
-<td>[nark-hashmap](https://github.com/rockeet/nark-hashmap)</td>
+<td><a href="https://github.com/rockeet/nark-hashmap">nark-hashmap</a></td>
 <td>header only</td>
 <tr>
 <tr>
-<td>[nark-bone](https://github.com/rockeet/nark-bone)</td>
+<td><a href="https://github.com/rockeet/nark-bone">nark-bone</a></td>
 <td>Require binary library</td>
 </tr>
 </tbody>
