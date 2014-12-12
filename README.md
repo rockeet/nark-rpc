@@ -33,7 +33,7 @@ RPC(Remote Procedure Call) on top of nark-serialization
 </tbody>
 </table>
 
-**Note: All `nark` repositories should be in the same directory**
+**Note:** All `nark` repositories should be in the same directory.
 
 ## Compile
   1. Compile `boost_thread`, `boost_date_time`, `boost_system`
