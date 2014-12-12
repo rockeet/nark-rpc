@@ -3,6 +3,51 @@ nark-rpc
 
 RPC(Remote Procedure Call) on top of nark-serialization
 
+## Prerequisite
+<table>
+<tbody>
+<tr>
+<td>[boost-1.41 or newer](http://sourceforge.net/projects/boost/)</td>
+<td>
+  * Require `boost_thread`, `boost_date_time`, `boost_system` to be built
+  * Other boost libraries are used as header-only
+</td>
+<tr>
+<td>[nark-serialization](https://github.com/rockeet/nark-serialization)</td>
+<td>Require binary library</td>
+</tr>
+<tr>
+<td>[nark-hashmap](https://github.com/rockeet/nark-hashmap)</td>
+<td>header only</td>
+<tr>
+<tr>
+<td>[nark-bone](https://github.com/rockeet/nark-bone)</td>
+<td>Require binary library</td>
+</tr>
+</tbody>
+</table>
+
+**Note: All `nark` repositories should be in the same directory**
+
+## Compile
+  1. Compile `boost_thread`, `boost_date_time`, `boost_system`
+  2. Compile
+```bash
+$ cd /path/to/nark-bone
+$ make
+$ cd ../nark-serialization
+$ make
+$ cd ../nark-rpc
+$ make
+$ cd samples # /path/to/nark-rpc/samples
+$ make
+$ build/*/dbg/echo_server/echo_server.exe # run echo server
+$ #
+$ # open a new terminal
+$ build/*/dbg/echo_client/echo_client.exe # run echo client
+$ # Have Fun!
+```
+
 ## Quick Start
 ### IDL
 nark-rpc are all in C++, even its IDL is C++, `samples/ifile.h` is a good example:
