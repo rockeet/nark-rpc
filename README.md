@@ -83,7 +83,7 @@ END_RPC_ADD_MF()
 END_RPC_INTERFACE()
 ```
 
-* Notes
+### Notes
   1. Function overload is not allowed in IDL.
   2. `RPC_DECLARE_MF` or `RPC_DECLARE_MF_D` should be used consitently in the same RPC interface.
 
