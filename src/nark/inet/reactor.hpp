@@ -5,7 +5,7 @@
 # pragma once
 #endif
 
-#include "../util/refcount.hpp"
+#include <nark/util/refcount.hpp>
 #include <boost/intrusive_ptr.hpp>
 #include <boost/coro>
 

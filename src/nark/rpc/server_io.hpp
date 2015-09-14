@@ -10,7 +10,7 @@
 #include <limits.h>
 #include <boost/type_traits.hpp>
 
-#include <nark/util/access_byid.hpp>
+#include <nark/io/access_byid.hpp>
 
 #include "rpc_basic.hpp"
 #include "arg_traits.hpp"

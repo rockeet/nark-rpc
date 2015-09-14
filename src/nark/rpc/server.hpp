@@ -17,11 +17,11 @@
 
 #include <nark/num_to_str.hpp>
 
-//#include "../thread/concurrent_queue.hpp"
-//#include "../thread/thread.hpp"
-//#include "../thread/pipeline.hpp"
+//#include <nark/thread/concurrent_queue.hpp>
+//#include <nark/thread/thread.hpp>
+//#include <nark/thread/pipeline.hpp>
 //#include <nark/io/IOException.hpp>
-//#include "../io/SocketStream.hpp"
+//#include <nark/io/SocketStream.hpp>
 
 #define RPC_SERVER_SIDE
 

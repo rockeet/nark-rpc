@@ -140,18 +140,11 @@ endif
 rpc_src := \
    $(wildcard src/nark/util/*.cpp) \
    $(wildcard src/nark/inet/*.cpp) \
+   $(wildcard src/nark/io/*.cpp) \
    $(wildcard src/nark/rpc/*.cpp)
 
-core_src := \
-   $(wildcard src/nark/*.cpp) \
-   $(wildcard src/nark/io/*.cpp) \
-   $(wildcard src/nark/util/*.cpp) \
-   ${obsoleted_src}
-
-core_src := $(filter-out ${trbxx_src} ${zip_src}, ${core_src})
-
 #function definition
-#@param:${1} -- targets var prefix, such as bdb_util | core
+#@param:${1} -- targets var prefix, such as bdb_util | bone
 #@param:${2} -- build type: d | r
 objs = $(addprefix ${${2}dir}/, $(addsuffix .o, $(basename ${${1}_src})))
 
@@ -179,11 +172,11 @@ dbg: ${DBG_TARGETS}
 rls: ${RLS_TARGETS}
 
 ${rpc_d} ${rpc_r} : LIBS += ${LIBBOOST} -lpthread
-${rpc_d} : LIBS += -lnark-core-${COMPILER}-d -lnark-bone-${COMPILER}-d
-${rpc_r} : LIBS += -lnark-core-${COMPILER}-r -lnark-bone-${COMPILER}-r
+${rpc_d} : LIBS += -lnark-serialization-${COMPILER}-d -lnark-bone-${COMPILER}-d
+${rpc_r} : LIBS += -lnark-serialization-${COMPILER}-r -lnark-bone-${COMPILER}-r
 
-${rpc_d} : $(call objs,rpc,d) ${core_d}
-${rpc_r} : $(call objs,rpc,r) ${core_r}
+${rpc_d} : $(call objs,rpc,d) ${bone_d}
+${rpc_r} : $(call objs,rpc,r) ${bone_r}
 ${static_rpc_d} : $(call objs,rpc,d)
 ${static_rpc_r} : $(call objs,rpc,r)
 
@@ -211,7 +204,7 @@ endif
 	@${AR} rcs $@ $(filter %.o,$^)
 
 .PHONY : install
-install : core bdb_util
+install : bone bdb_util
 	cp lib/* ${prefix}/lib/
 
 .PHONY : clean

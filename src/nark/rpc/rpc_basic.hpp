@@ -9,7 +9,7 @@
 
 #include <nark/io/DataIO.hpp>
 #include <nark/io/StreamBuffer.hpp>
-#include <nark/util/access_byid.hpp>
+#include <nark/io/access_byid.hpp>
 
 namespace nark { namespace rpc {
 
