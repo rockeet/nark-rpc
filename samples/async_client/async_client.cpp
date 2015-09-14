@@ -1,18 +1,21 @@
 #include "stdafx.h"
 #include <iostream>
 #include <nark/rpc/client.hpp>
-#include <nark/io/SocketStream.hpp>
+#include <nark/inet/SocketStream.hpp>
 
 using namespace std;
 using namespace nark;
 using namespace nark::rpc;
 
 #include "../test.h"
+
+#ifdef _MSC_VER
 #pragma comment(lib, "Ws2_32.lib")
+#endif
 
 void printVec(const vint_vec& vec)
 {
-	for (int i = 0; i != vec.size(); ++i)
+	for (size_t i = 0; i != vec.size(); ++i)
 	{
 		cout << "vec[" << i << "]=" << vec[i] << "\n";
 	}
@@ -29,7 +32,7 @@ private:
 	void on_multiVec(const client_packet_base& packet, vint_vec& z, vint_vec& x, vint_vec& y)
 	{
 		printf("AsyncImpl::on_multiVec\n");
-		printf("ret=%u, z=%u, x=%u, y=%u\n", packet.retv, z.size(), x.size(), y.size());
+		printf("ret=%u, z=%zu, x=%zu, y=%zu\n", packet.retv, z.size(), x.size(), y.size());
 	}
 };
 RPC_TYPEDEF_PTR(AsyncImpl);
@@ -39,14 +42,11 @@ try {
 	auto_ptr<SocketStream> cs(ConnectSocket("127.0.0.1:8001"));
 	rpc_client<PortableDataInput, PortableDataOutput> client(cs.get());
 
-	AsyncImplPtr obj1;
-	SampleRPC_Interface2Ptr obj2;
+	AsyncImplPtr obj1 = client.create("obj1");
+	SampleRPC_Interface2Ptr obj2 = client.create("obj2");
 
-	client.create(obj1, "obj1");
-	client.create(obj2, "obj2");
-
-	int ret;
-	ret = client.retrieve(obj2, "obj2");
+	int ret = client.retrieve(obj2, "obj2");
+	(void)ret;
 
 	rpc_ret_t val = obj1->get_val(100);
 	cout << "obj1->get_val(100)=" << val << "\n";
@@ -70,12 +70,12 @@ try {
 	printVec(vec);
 
 	std::vector<unsigned> vec2;
-	for (int i = 0; i != vec.size(); ++i)
+	for (size_t i = 0; i != vec.size(); ++i)
 	{
 		vec2.push_back(i + 1);
 	}
 //	obj1->multiVec.on_return = &AsyncInterface::on_multiVec;
-	for (int i = 0; i < 5; ++i)
+	for (size_t i = 0; i < 5; ++i)
 	{
 		std::vector<unsigned> vec3;
 		obj1->multiVec.async(vec3, vec, vec2);

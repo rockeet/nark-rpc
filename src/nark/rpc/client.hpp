@@ -43,6 +43,7 @@ namespace nark { namespace rpc {
 	client_stub_ref<FunName##_stub_t> FunName;
 
 #define RPC_DECLARE_MF(FunName, ArgList) RPC_DECLARE_MF_EX(FunName, ArgList, =0)
+#define RPC_DECLARE_MF_D RPC_DECLARE_MF
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #define BEGIN_RPC_ADD_MF_EX(ThisClass, ClassName) \

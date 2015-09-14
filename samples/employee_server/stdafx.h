@@ -5,10 +5,16 @@
 # pragma once
 #endif
 
-#include <db_cxx.h>
 #include <stdio.h>
-#include <nark/io/SocketStream.hpp>
+#include <nark/inet/SocketStream.hpp>
+
+#ifdef EMPLOYEE_USE_BDB
+#include <db_cxx.h>
 #include <nark/bdb_util/dbmap.hpp>
 #include <nark/bdb_util/kmapdset.hpp>
+#else
+#include <map>
+#include <vector>
+#endif
 
 #endif // __stdafx_h__

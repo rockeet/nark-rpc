@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <nark/rpc/client.hpp>
-#include <nark/io/SocketStream.hpp>
+#include <nark/inet/SocketStream.hpp>
 
 using namespace std;
 using namespace nark;
@@ -21,8 +21,7 @@ int main0(int argc, char* argv[])
 try {
 	auto_ptr<SocketStream> cs(ConnectSocket("127.0.0.1:8001"));
 	rpc_client<PortableDataInput, PortableDataOutput> client(cs.get());
-	FileObjPtr file;
-	client.create(file);
+	FileObjPtr file = client.create();
 	string fname = "test.txt";
 	vector<char> buffer;
 	int ret = file->open(fname, "w+");
@@ -34,7 +33,7 @@ try {
 		std::copy(txt.begin(), txt.end(), buffer.begin());
 		uint32_t nWritten;
 		file->write(buffer, &nWritten);
-		printf("write=%d, written=%d\n", buffer.size(), nWritten);
+		printf("write=%zd, written=%d\n", buffer.size(), nWritten);
 		file->close();
 	}
 	ret = file->open("test.txt", "r");
@@ -43,7 +42,7 @@ try {
 		printf("open file for read successed\n");
 		uint32_t nRead = buffer.size();
 		file->read(&buffer, nRead);
-		printf("read=%d, readed=%d\n", nRead, buffer.size());
+		printf("read=%d, readed=%zd\n", nRead, buffer.size());
 		string txt;
 		txt.resize(buffer.size());
 		std::copy(buffer.begin(), buffer.end(), txt.begin());

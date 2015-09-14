@@ -187,7 +187,7 @@ public:
 		p->on_ret = on_return;
 		packet->stub = this->m_meta;
 		packet->how_call = rpc_call_asynch_ordered;
-		if (m_self->stub->callid) // prefer by id
+		if (packet->stub->m_callid) // prefer by id
 			m_meta->send_id_args(client, packet.get());
 		else // fall back to by name
 			m_meta->send_nm_args(client, packet.get());

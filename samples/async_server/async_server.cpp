@@ -3,19 +3,21 @@
 
 #include "stdafx.h"
 
+#ifdef _MSC_VER
 #pragma warning(disable: 4251) // needs to have dll-interface
 #pragma warning(disable: 4267) // conversion from 'size_t' to 'long', possible loss of data
 #pragma warning(disable: 4244) // conversion from '__w64 const unsigned int' to 'unsigned int', possible loss of data
+#pragma comment(lib, "Ws2_32.lib")
+#endif
 
 #include <nark/rpc/server.hpp>
-#include <nark/io/SocketStream.hpp>
+#include <nark/inet/SocketStream.hpp>
 #include <iostream>
 
 using namespace nark;
 using namespace nark::rpc;
 
 #include "../test.h"
-#pragma comment(lib, "Ws2_32.lib")
 
 // use macro for convenient
 BEGIN_RPC_IMP_INTERFACE(SampleRPC_Imp1, AsyncInterface)
@@ -40,7 +42,7 @@ BEGIN_RPC_IMP_INTERFACE(SampleRPC_Imp1, AsyncInterface)
 	rpc_ret_t multiVec(vint_vec& z, vint_vec& x, vint_vec& y)
 	{
 		z.clear();
-		for (int i = 0; i != x.size(); ++i)
+		for (size_t i = 0; i != x.size(); ++i)
 		{
 			z.push_back(x[i] * y[i]);
 		}

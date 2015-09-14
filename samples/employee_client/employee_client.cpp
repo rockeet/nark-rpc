@@ -2,7 +2,9 @@
 //
 
 #include "stdafx.h"
+#ifdef _MSC_VER
 #pragma comment(lib, "Ws2_32.lib")
+#endif
 
 #include <nark/rpc/client.hpp>
 #include "../employee.h"
@@ -12,8 +14,7 @@ try {
 	auto_ptr<SocketStream> cs(ConnectSocket("127.0.0.1:8001"));
 	rpc_client<PortableDataInput, PortableDataOutput> client(cs.get());
 
-	DbEmployeePtr dbem;
-	client.create(dbem, "DbEmployeeObject");
+	DbEmployeePtr dbem = client.create("DbEmployeeObject");
 
 	Employee em;
 	vector<Employee> ems;

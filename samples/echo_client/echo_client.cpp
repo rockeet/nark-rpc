@@ -3,11 +3,13 @@
 
 #include "stdafx.h"
 
+#ifdef _MSC_VER
 #pragma comment(lib, "Ws2_32.lib")
+#endif
 
 #include <stdio.h>
 #include <nark/rpc/client.hpp>
-#include <nark/io/SocketStream.hpp>
+#include <nark/inet/SocketStream.hpp>
 #include <iostream>
 
 using namespace std;
@@ -20,8 +22,7 @@ int main0(int argc, char* argv[])
 try {
 	auto_ptr<SocketStream> cs(ConnectSocket("127.0.0.1:8001"));
 	rpc_client<PortableDataInput, PortableDataOutput> client(cs.get());
-	EchoPtr ec;
-	client.create(ec, "echo");
+	EchoPtr ec = client.create("echo");
 	while (!cin.eof())
 	{
 		string msg, y;
