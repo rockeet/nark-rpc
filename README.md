@@ -79,7 +79,7 @@ There is another scope: `GlobaleScope`, `samples/echo.h` is such an example:
 BEGIN_RPC_INTERFACE(Echo, GlobaleScope)
     RPC_ADD_MF(echo)
 END_RPC_ADD_MF()
-    RPC_DECLARE_MF_D(echo, (const string& msg, string* echo_of_server))
+    RPC_DECLARE_MF_D(echo, (const string& msg, string* echoFromServer))
 END_RPC_INTERFACE()
 ```
 
