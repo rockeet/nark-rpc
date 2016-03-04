@@ -28,7 +28,7 @@
 
 namespace nark {
 
-class FEBIRD_DLL_EXPORT id_generator
+class NARK_DLL_EXPORT id_generator
 {
 	// use free-list structure, same as memory management
 	// id may not be 0
@@ -63,7 +63,7 @@ public:
 	void get_used_id(std::vector<uintptr_t>* used_id) const;
 };
 
-class FEBIRD_DLL_EXPORT access_byid : public id_generator
+class NARK_DLL_EXPORT access_byid : public id_generator
 {
 protected:
 	virtual void on_destroy(void* vp);
@@ -91,7 +91,7 @@ public:
 // do not allow T to be non-pointer type
 template<class T> class AccessByNameID;
 
-template<> class FEBIRD_DLL_EXPORT AccessByNameID<void*>
+template<> class NARK_DLL_EXPORT AccessByNameID<void*>
 {
 protected:
 	access_byid m_byid;

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="FEBIRD_USE_DLL;WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;DATA_IO_MUST_DEFINE_CUSTOM_SERIALIZATION"
+				PreprocessorDefinitions="NARK_USE_DLL;WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;DATA_IO_MUST_DEFINE_CUSTOM_SERIALIZATION"
 				GeneratePreprocessedFile="0"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

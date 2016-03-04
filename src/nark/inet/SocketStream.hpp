@@ -21,7 +21,7 @@ typedef int SOCKET;
 
 namespace nark {
 
-class FEBIRD_DLL_EXPORT SocketException : public IOException
+class NARK_DLL_EXPORT SocketException : public IOException
 {
 public:
 	explicit SocketException(const char* szMsg = "SocketException");
@@ -30,7 +30,7 @@ public:
 	static int lastError();
 };
 
-class FEBIRD_DLL_EXPORT SocketStream : public RefCounter, public IDuplexStream
+class NARK_DLL_EXPORT SocketStream : public RefCounter, public IDuplexStream
 {
 	DECLARE_NONE_COPYABLE_CLASS(SocketStream)
 public:
@@ -57,7 +57,7 @@ protected:
 	bool m_bAutoClose;
 };
 
-class FEBIRD_DLL_EXPORT SocketAcceptor : public IAcceptor
+class NARK_DLL_EXPORT SocketAcceptor : public IAcceptor
 {
 	::SOCKET m_socket;
 public:
@@ -65,7 +65,7 @@ public:
 	SocketStream* accept();
 };
 
-FEBIRD_DLL_EXPORT SocketStream* ConnectSocket(const char* szServerAddr);
+NARK_DLL_EXPORT SocketStream* ConnectSocket(const char* szServerAddr);
 
 }
 

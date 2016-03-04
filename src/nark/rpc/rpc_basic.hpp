@@ -13,7 +13,7 @@
 
 namespace nark { namespace rpc {
 
-#define FEBIRD_RPC_HELLO "nark rpc hello"
+#define NARK_RPC_HELLO "nark rpc hello"
 
 #define RPC_TYPEDEF_PTR(Class)  typedef boost::intrusive_ptr<Class> Class##Ptr
 
@@ -33,7 +33,7 @@ enum {
 	rpc_call_synch	        = 3
 };
 
-#define FEBIRD_RPC_GEN_full_mf_name(ClassName)	\
+#define NARK_RPC_GEN_full_mf_name(ClassName)	\
 	static std::string full_mf_name(const char* mf_name)	\
 	{														\
 		const static char szPrefix[] = ClassName;			\
@@ -92,7 +92,7 @@ template<class T> struct rpc_inout
 	T* operator->() { return &r; }
 };
 
-class FEBIRD_DLL_EXPORT rpc_exception : public std::exception
+class NARK_DLL_EXPORT rpc_exception : public std::exception
 {
 protected:
 	std::string m_message;
@@ -105,7 +105,7 @@ public:
 };
 
 typedef class remote_object* (*create_fun_t)();
-struct FEBIRD_DLL_EXPORT RoCreator // : public RefCounter
+struct NARK_DLL_EXPORT RoCreator // : public RefCounter
 {
 	create_fun_t create;
 	unsigned     classID;
@@ -124,7 +124,7 @@ public:
 };
 
 //! all states is store on server, serialization will only pass the objectID
-class FEBIRD_DLL_EXPORT remote_object : public RefCounter
+class NARK_DLL_EXPORT remote_object : public RefCounter
 {
 public:
 	typedef remote_object SFINAE_ro_self_t; // for SFINAE
@@ -162,20 +162,20 @@ protected:
 };
 typedef boost::intrusive_ptr<remote_object> remote_object_ptr;
 
-class FEBIRD_DLL_EXPORT GlobaleScope : public remote_object
+class NARK_DLL_EXPORT GlobaleScope : public remote_object
 {
 public:
 	typedef GlobaleScope SFINAE_gs_self_t; // for SFINAE
 };
 typedef boost::intrusive_ptr<GlobaleScope> GlobaleScopePtr;
-class FEBIRD_DLL_EXPORT SessionScope : public remote_object
+class NARK_DLL_EXPORT SessionScope : public remote_object
 {
 public:
 	typedef SessionScope SFINAE_ss_self_t; // for SFINAE
 };
 typedef boost::intrusive_ptr<SessionScope> SessionScopePtr;
 
-class FEBIRD_DLL_EXPORT ObjectFactoryBase
+class NARK_DLL_EXPORT ObjectFactoryBase
 {
 protected:
 	AccessByNameID<RoCreator*> m_map;

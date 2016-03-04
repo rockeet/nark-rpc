@@ -4,7 +4,7 @@
 
 namespace nark { namespace rpc {
 
-void FEBIRD_DLL_EXPORT
+void NARK_DLL_EXPORT
 incompitible_class_cast(remote_object* y, const char* szRequestClassName)
 {
 	string_appender<> oss;

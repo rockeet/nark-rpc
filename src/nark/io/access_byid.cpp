@@ -6,11 +6,11 @@
 #include <nark/util/throw.hpp>
 
 #if defined(_MSC_VER) && (defined(_DEBUG) || !defined(NDEBUG))
-//	#undef  FEBIRD_RPC_DONT_USE_HASH_STRMAP
-	#define FEBIRD_RPC_DONT_USE_HASH_STRMAP
+//	#undef  NARK_RPC_DONT_USE_HASH_STRMAP
+	#define NARK_RPC_DONT_USE_HASH_STRMAP
 #endif
 
-#ifdef FEBIRD_RPC_DONT_USE_HASH_STRMAP
+#ifdef NARK_RPC_DONT_USE_HASH_STRMAP
 	#include <map>
 	typedef std::map<std::string, void*> NameMapBase;
 #else

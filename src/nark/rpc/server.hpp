@@ -70,7 +70,7 @@ namespace nark { namespace rpc {
 #define BEGIN_RPC_ADD_MF_EX(ThisClass,ClassName)\
 	typedef ThisClass self_t;				\
 public:										\
-	FEBIRD_RPC_GEN_full_mf_name(ClassName)	\
+	NARK_RPC_GEN_full_mf_name(ClassName)	\
 	template<class Session>					\
 	static std::pair<ThisClass*,ClassMeta*> \
 	get_meta(Session*tag)					\
@@ -122,7 +122,7 @@ meta.second->stubs.push_back(new server_stub<Session,FunName##_stub_t>(&self_t::
 class server_packet_base;
 class session_base;
 
-class FEBIRD_DLL_EXPORT server_stub_i
+class NARK_DLL_EXPORT server_stub_i
 {
 public:
 	std::string m_name;
@@ -138,12 +138,12 @@ public:
 	virtual server_packet_base* read_args(session_base* server, const server_packet_base* packet) const = 0;
 };
 
-struct FEBIRD_DLL_EXPORT ClassMeta : public RoCreator
+struct NARK_DLL_EXPORT ClassMeta : public RoCreator
 {
 	std::vector<server_stub_i*> stubs;
 };
 
-class FEBIRD_DLL_EXPORT server_packet_base : public RefCounter
+class NARK_DLL_EXPORT server_packet_base : public RefCounter
 {
 public:
 	server_stub_i* stub;
@@ -231,7 +231,7 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////////
-class FEBIRD_DLL_EXPORT session_base : public SessionScope
+class NARK_DLL_EXPORT session_base : public SessionScope
 {
 protected:
 	class rpc_server_base* m_owner;
@@ -262,7 +262,7 @@ public:
 	void start();
 };
 
-class FEBIRD_DLL_EXPORT rpc_server_base
+class NARK_DLL_EXPORT rpc_server_base
 {
 	friend class session_base;
 protected:

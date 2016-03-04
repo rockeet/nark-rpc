@@ -48,7 +48,7 @@ namespace nark { namespace rpc {
 
 #define BEGIN_RPC_ADD_MF_EX(ThisClass, ClassName) \
 	typedef ThisClass self_t;				\
-	FEBIRD_RPC_GEN_full_mf_name(ClassName)	\
+	NARK_RPC_GEN_full_mf_name(ClassName)	\
 	template<class Client>					\
 	void bind_client(Client* client)		\
 	{	set_ext_ptr(client);
@@ -86,12 +86,12 @@ namespace nark { namespace rpc {
 ///         rpc_client<Input, Output>
 
 typedef SessionScope rpc_client_basebase;
-class FEBIRD_DLL_EXPORT client_packet_base;
+class NARK_DLL_EXPORT client_packet_base;
 
 template<class Function> class client_stub_ref;
 template<class Client, class ArgList, class Function> class client_packet;
 
-class FEBIRD_DLL_EXPORT client_stub_i
+class NARK_DLL_EXPORT client_stub_i
 {
 public:
 	std::string  m_className;
@@ -128,7 +128,7 @@ public:
 	virtual void read_args(rpc_client_basebase* client, client_packet_base* packet) = 0;
 };
 
-class FEBIRD_DLL_EXPORT client_packet_base : public RefCounter
+class NARK_DLL_EXPORT client_packet_base : public RefCounter
 {
 public:
 	class client_stub_i* stub;
@@ -239,7 +239,7 @@ public:
 //-------------------------------------------------------------------------
 //
 
-class FEBIRD_DLL_EXPORT rpc_client_base : public SessionScope
+class NARK_DLL_EXPORT rpc_client_base : public SessionScope
 {
 protected:
 	std::map<std::string, client_stub_i*> m_stubTable;

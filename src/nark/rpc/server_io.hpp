@@ -17,7 +17,7 @@
 
 namespace nark { namespace rpc {
 
-void FEBIRD_DLL_EXPORT
+void NARK_DLL_EXPORT
 incompitible_class_cast(remote_object* x, const char* szRequestClassName);
 
 template<class Input>  class server_object_input
